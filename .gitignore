@@ -1,0 +1,22 @@
+
+# Visual Studio generated files
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+
+# Temporary files
+*.log
+*.tmp
+
+# Private credentials and secrets
+secrets.vb
+.env
+.env.*
+
+# PHP private configuration
+config.php
+
+# NuGet packages
+packages/

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HostelFix | Report an issue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #151b24;
+    --line: #263041;
+    --text: #e9eef5;
+    --muted: #8795a8;
+    --accent: #6ea8fe;
+    --danger: #ff6b6b;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 28px 16px 48px;
+  }
+  main { width: 100%; max-width: 440px; }
+  h1 { font-size: 1.9rem; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); margin: 0 0 22px; line-height: 1.5; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: .9rem; font-weight: 500; margin-bottom: 6px; }
+  input, select, textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--text);
+    background: #0f141b;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 13px;
+    transition: border-color .2s, box-shadow .2s;
+    appearance: none;
+  }
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 34px;
+  }
+  textarea { resize: vertical; min-height: 84px; }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(110,168,254,.22);
+  }
+  select.emergency { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255,107,107,.18); }
+  .hint { font-size: .85rem; color: var(--danger); margin: 7px 0 0; display: none; }
+  .hint.show { display: block; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 380px) { .row { grid-template-columns: 1fr; } }
+  button {
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #0b1220;
+    background: var(--accent);
+    border: 0;
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: transform .15s, opacity .2s;
+  }
+  button:hover { transform: translateY(-1px); }
+  button:active { transform: translateY(0); }
+  button:disabled { opacity: .6; cursor: wait; transform: none; }
+  button:focus-visible { outline: 3px solid rgba(110,168,254,.5); outline-offset: 2px; }
+  button.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); margin-top: 18px; }
+  .error { color: var(--danger); font-size: .9rem; margin: 0 0 12px; min-height: 1.2em; }
+  .hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+
+  .done { text-align: center; padding: 10px 0 4px; display: none; }
+  .done.show { display: block; animation: rise .45s ease both; }
+  .done p { color: var(--muted); line-height: 1.5; margin: 8px 0 0; }
+  .ref {
+    font-size: 3.2rem; font-weight: 700; letter-spacing: .02em;
+    color: var(--accent); margin: 14px 0 4px;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Report a room issue</h1>
+  <p class="sub">Tell the porter's office what needs fixing. You'll get a reference number to follow up with.</p>
+
+  <div class="card">
+    <form id="f" novalidate>
+      <div class="row field">
+        <div>
+          <label for="hostel">Hostel</label>
+          <select id="hostel" name="hostel" required>
+            <option value="" disabled selected>Select</option>
+            <!-- Keep in sync with submit.php -->
+            <option>Hostel A</option>
+            <option>Hostel B</option>
+            <option>Hostel C</option>
+          </select>
+        </div>
+        <div>
+          <label for="room">Room number</label>
+          <input id="room" name="room" type="text" maxlength="20" placeholder="e.g. B12" autocomplete="off" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="category">Issue category</label>
+        <select id="category" name="category" required>
+          <option value="" disabled selected>Select</option>
+          <option>Plumbing</option>
+          <option>Electrical</option>
+          <option>Furniture</option>
+          <option>Internet</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="priority">Priority</label>
+        <select id="priority" name="priority" required>
+          <option value="" disabled selected>Select</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Emergency</option>
+        </select>
+        <p class="hint" id="hint">Emergency is for flooding, exposed wires, fire risk or anything unsafe right now.</p>
+      </div>
+
+      <div class="field">
+        <label for="description">Details (optional)</label>
+        <textarea id="description" name="description" maxlength="500" placeholder="What is happening?"></textarea>
+      </div>
+
+      <div class="hp" aria-hidden="true">
+        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+      <p class="error" id="err" role="alert"></p>
+      <button type="submit" id="btn">Send complaint</button>
+    </form>
+
+    <div class="done" id="done">
+      <h2 style="margin:0;font-weight:600;">Complaint sent</h2>
+      <div class="ref" id="ref"></div>
+      <p>Keep this reference number. The porter's office will assign a technician.</p>
+      <button type="button" class="ghost" id="again">Report another issue</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('f');
+  const btn = document.getElementById('btn');
+  const err = document.getElementById('err');
+  const done = document.getElementById('done');
+  const prio = document.getElementById('priority');
+  const hint = document.getElementById('hint');
+
+  prio.addEventListener('change', () => {
+    const em = prio.value === 'Emergency';
+    prio.classList.toggle('emergency', em);
+    hint.classList.toggle('show', em);
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+
+    if (!form.hostel.value || !form.room.value.trim() || !form.category.value || !form.priority.value) {
+      err.textContent = 'Fill in hostel, room number, category and priority.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    try {
+      const res = await fetch('submit.php', { method: 'POST', body: new FormData(form) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not send. Try again.');
+      document.getElementById('ref').textContent = data.reference;
+      form.style.display = 'none';
+      done.classList.add('show');
+    } catch (ex) {
+      err.textContent = ex.message || 'Could not send. Check your connection and try again.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send complaint';
+    }
+  });
+
+  document.getElementById('again').addEventListener('click', () => {
+    form.reset();
+    prio.dispatchEvent(new Event('change'));
+    done.classList.remove('show');
+    form.style.display = '';
+  });
+</script>
+</body>
+</html>

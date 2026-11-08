@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Folder Name="/Solution Items/web/">
+    <File Path="../../../../../../xampp/htdocs/Hostelfix/api.php" />
+    <File Path="../../../../../../xampp/htdocs/Hostelfix/config.php" />
+    <File Path="../../../../../../xampp/htdocs/Hostelfix/index.html" />
+    <File Path="../../../../../../xampp/htdocs/Hostelfix/sms.php" />
+    <File Path="../../../../../../xampp/htdocs/Hostelfix/submit.php" />
+  </Folder>
+  <Project Path="HostelFix.vbproj" Id="ffd786e3-c839-4401-b49f-0e3d41ef570e" />
+</Solution>
